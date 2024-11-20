@@ -1,5 +1,5 @@
 // components
-import Dashboard from "@/interface/Dashboard";
+import Dashboard from "@/interface/dashboard/Dashboard";
 
 // icons
 import { House } from "lucide-react";

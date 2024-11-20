@@ -8,25 +8,30 @@ import {
   SidebarMenuButton,
   SidebarGroup,
 } from "@/components/ui/sidebar";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // types
 import type { Links as LinksType } from "@/router/Routes";
+import { House } from "lucide-react";
 
 type NavContentProps = {
   links: LinksType[];
 };
 
 const NavContent = ({ links }: NavContentProps): JSX.Element => {
-  return (
-    <SidebarContent>
+  const location = useLocation();
+  const ApplicationGroup = (): JSX.Element => {
+    return (
       <SidebarGroup>
         <SidebarGroupLabel>Application</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
             {links.map((link) => (
               <SidebarMenuItem key={link.title}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  isActive={location.pathname === link.path}
+                >
                   <Link to={link.path}>
                     {link.icon}
                     <span>{link.title}</span>
@@ -37,6 +42,36 @@ const NavContent = ({ links }: NavContentProps): JSX.Element => {
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
+    );
+  };
+
+  const ChatGroup = (): JSX.Element => {
+    return (
+      <SidebarGroup>
+        <SidebarGroupLabel>Chat</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {/* TODO: handle dynamic dates retrieved from API */}
+            {/* {links.map((link) => ( */}
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild>
+                <Link to={"/"}>
+                  {<House />}
+                  <span>November 16 (recipe name)</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            {/* ))} */}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    );
+  };
+
+  return (
+    <SidebarContent>
+      <ApplicationGroup />
+      <ChatGroup />
     </SidebarContent>
   );
 };
