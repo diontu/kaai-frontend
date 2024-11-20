@@ -1,10 +1,19 @@
-import { Card, CardContent } from "@/components/ui/card";
+import AdvancedSearch from "@/components/complex/advancedsearch/AdvancedSearch";
+import { useState } from "react";
+import CardView from "@/interface/dashboard/CardView";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import ListView from "@/interface/dashboard/ListView";
 
 type DashboardProps = {
   fullscreen?: boolean;
 };
 
+type ViewType = "card" | "list";
+
 const Dashboard = ({ fullscreen }: DashboardProps) => {
+  const [search, setSearch] = useState("");
+  const [view, setView] = useState<ViewType>("list");
+
   const mockData = [
     {
       id: 1,
@@ -15,22 +24,25 @@ const Dashboard = ({ fullscreen }: DashboardProps) => {
     },
   ];
   return (
-    <div className={fullscreen ? "w-full" : "w-[768px] m-auto"}>
+    <div className={fullscreen ? "max-w-full" : "max-w-[768px] m-auto"}>
       <h1>My Recipes</h1>
-      {mockData.map((recipe) => (
-        <Card className="w-[150px] overflow-hidden group">
-          <CardContent className="px-0 overflow-hidden">
-            <div className="w-[150px] h-[150px] overflow-hidden">
-              <img
-                src="https://avatars.githubusercontent.com/u/61067472?s=400&u=b572e74023bbb67946f6cba4d34e5981c5cf1f20&v=4"
-                alt="recipe"
-                className="group-hover:scale-110 transition-all"
-              />
-            </div>
-            <div className="font-semibold truncate">{recipe.title}</div>
-          </CardContent>
-        </Card>
-      ))}
+      <AdvancedSearch
+        searchValue={search}
+        searchOnChange={(value) => setSearch(value)}
+        searchPlaceholder="Search Recipe"
+        filterOptions={[{ label: "Protein", value: "protein" }]}
+      />
+      <ToggleGroup
+        type="single"
+        onValueChange={(value) => setView(value as ViewType)}
+        defaultValue={view}
+      >
+        <ToggleGroupItem value="card">A</ToggleGroupItem>
+        <ToggleGroupItem value="list">B</ToggleGroupItem>
+      </ToggleGroup>
+
+      {view === "card" && <CardView data={mockData} />}
+      {view === "list" && <ListView />}
     </div>
   );
 };
