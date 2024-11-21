@@ -3,6 +3,7 @@ import { useState } from "react";
 import CardView from "@/interface/dashboard/CardView";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import ListView from "@/interface/dashboard/ListView";
+import { AlignJustify, Folders } from "lucide-react";
 
 type DashboardProps = {
   fullscreen?: boolean;
@@ -37,12 +38,16 @@ const Dashboard = ({ fullscreen }: DashboardProps) => {
         onValueChange={(value) => setView(value as ViewType)}
         defaultValue={view}
       >
-        <ToggleGroupItem value="card">A</ToggleGroupItem>
-        <ToggleGroupItem value="list">B</ToggleGroupItem>
+        <ToggleGroupItem value="card">
+          <Folders />
+        </ToggleGroupItem>
+        <ToggleGroupItem value="list">
+          <AlignJustify />
+        </ToggleGroupItem>
       </ToggleGroup>
 
       {view === "card" && <CardView data={mockData} />}
-      {view === "list" && <ListView />}
+      {view === "list" && <ListView data={mockData} />}
     </div>
   );
 };

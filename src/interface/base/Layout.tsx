@@ -1,4 +1,5 @@
 import { memo } from "react";
+import { Outlet } from "react-router-dom";
 
 // components
 import Header from "@/interface/base/Header";
@@ -7,7 +8,6 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 // types
 import type { Links } from "@/router/Routes";
-import { Outlet } from "react-router-dom";
 
 export type MainLayout = "main";
 
@@ -18,11 +18,11 @@ type Props = {
 const Layout = memo(({ links }: Props) => {
   return (
     <SidebarProvider>
-      <div className="flex w-screen h-screen">
-        <NavBar links={links} newSidebar={true} />
-        <div className="flex flex-col w-full">
+      <div className="flex w-screen h-screen px-6">
+        <NavBar links={links} />
+        <div className="flex flex-col w-full [&>*]:px-2">
           <Header />
-          <div className="overflow-y-scroll">
+          <div className="overflow-y-scroll flex-grow">
             <Outlet />
           </div>
         </div>

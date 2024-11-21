@@ -26,19 +26,22 @@ const NavContent = ({ links }: NavContentProps): JSX.Element => {
         <SidebarGroupLabel>Application</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-            {links.map((link) => (
-              <SidebarMenuItem key={link.title}>
-                <SidebarMenuButton
-                  asChild
-                  isActive={location.pathname === link.path}
-                >
-                  <Link to={link.path}>
-                    {link.icon}
-                    <span>{link.title}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
+            {links.map((link) => {
+              if (link.excludeFromSidebar) return null;
+              return (
+                <SidebarMenuItem key={link.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={location.pathname === link.path}
+                  >
+                    <Link to={link.path}>
+                      {link.icon}
+                      <span>{link.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              );
+            })}
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>

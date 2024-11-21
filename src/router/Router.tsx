@@ -10,6 +10,7 @@ const links = Object.values(ROUTES)
     title: route.title,
     path: route.path,
     icon: route.icon,
+    excludeFromSidebar: route.excludeFromSidebar,
   }));
 
 const routes = Object.keys(ROUTES).map((layout) => {

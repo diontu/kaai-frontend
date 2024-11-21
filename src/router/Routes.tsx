@@ -6,11 +6,13 @@ import { House } from "lucide-react";
 
 // types
 import type { LayoutTypes } from "@/interface/base/LayoutUtils";
+import Chat from "@/interface/chat/Chat";
 
 export type Links = {
   title: string;
   path: string;
   icon: React.ReactNode;
+  excludeFromSidebar?: boolean;
 };
 
 export type Routes = Record<
@@ -37,6 +39,13 @@ export const ROUTES: Routes = {
       path: "/explore",
       component: <Dashboard />,
       icon: <House />,
+    },
+    {
+      title: "Chat",
+      path: "/chat",
+      component: <Chat />,
+      icon: <House />,
+      excludeFromSidebar: true,
     },
   ],
 };
