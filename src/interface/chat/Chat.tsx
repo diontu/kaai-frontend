@@ -1,4 +1,5 @@
 import { useState, useEffect, memo } from "react";
+import { useLocation } from "react-router-dom";
 
 // components
 import Chatbox from "@/interface/chat/Chatbox";
@@ -6,14 +7,13 @@ import EmptyChat from "@/interface/chat/EmptyChat";
 
 // utils
 import AIChat from "@/api/ai-chat";
-import { createConversation } from "@/api/conversationApi";
+import {
+  createConversation,
+  getMessagesFromConversationId,
+} from "@/api/conversationApi";
 
 // type
 import type { MessageType } from "@/api/conversationApi";
-
-type ChatProps = {
-  chatId?: string;
-};
 
 type MessageObjectType = {
   message: string;
@@ -22,7 +22,10 @@ type MessageObjectType = {
 
 type MessagesType = (MessageType | { message: string; user: boolean })[];
 
-const Chat = ({ chatId: existingChatId }: ChatProps): JSX.Element => {
+const Chat = (): JSX.Element => {
+  const location = useLocation();
+  const { chatId: existingChatId } = location.state || {};
+
   const [messages, setMessages] = useState<MessagesType>([]);
   const [input, setInput] = useState("");
   const [chatId, setChatId] = useState(existingChatId);
@@ -30,14 +33,20 @@ const Chat = ({ chatId: existingChatId }: ChatProps): JSX.Element => {
   useEffect(() => {
     AIChat.start();
     AIChat.setOnMessage(handleMessage);
-    // AIChat.setOnFinishedMessage();
+    getExistingMessages(chatId);
 
     return () => {
       AIChat.close();
     };
   }, []);
 
-  // const handleFinishedMessage = () => {};
+  const getExistingMessages = async (chatId: string) => {
+    const results = await getMessagesFromConversationId(btoa(chatId));
+
+    if (results.status === "success") {
+      setMessages(results.data);
+    }
+  };
 
   const handleMessage = (event: MessageEvent) => {
     setMessages((prevMessages) => {

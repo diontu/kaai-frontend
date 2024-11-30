@@ -1,6 +1,6 @@
-import { apiPost } from "@/api/api";
+import { apiGet, apiPost } from "@/api/api";
 
-type ConversationType = {
+export type ConversationType = {
   id: string;
   title: string;
   created_by: number;
@@ -19,4 +19,16 @@ export const createConversation = (): ReturnType<
   typeof apiPost<ConversationType>
 > => {
   return apiPost<ConversationType>("/conversation");
+};
+
+export const getConversations = (): ReturnType<
+  typeof apiGet<ConversationType[]>
+> => {
+  return apiGet<ConversationType[]>("/conversation");
+};
+
+export const getMessagesFromConversationId = (
+  id: string
+): ReturnType<typeof apiGet<MessageType[]>> => {
+  return apiGet<MessageType[]>(`/conversation/${id}`);
 };
