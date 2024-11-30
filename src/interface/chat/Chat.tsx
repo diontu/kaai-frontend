@@ -1,5 +1,6 @@
 import { useState, useEffect, memo } from "react";
 import { useLocation } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 // components
 import Chatbox from "@/interface/chat/Chatbox";
@@ -24,6 +25,7 @@ type MessagesType = (MessageType | { message: string; user: boolean })[];
 
 const Chat = (): JSX.Element => {
   const location = useLocation();
+  const queryClient = useQueryClient();
   const { chatId: existingChatId } = location.state || {};
 
   const [messages, setMessages] = useState<MessagesType>([]);
@@ -33,17 +35,26 @@ const Chat = (): JSX.Element => {
   useEffect(() => {
     AIChat.start();
     AIChat.setOnMessage(handleMessage);
-    getExistingMessages(chatId);
 
     return () => {
       AIChat.close();
     };
   }, []);
 
-  const getExistingMessages = async (chatId: string) => {
-    const results = await getMessagesFromConversationId(btoa(chatId));
+  useEffect(() => {
+    getExistingMessages(existingChatId);
+  }, [location.state]);
 
+  const getExistingMessages = async (chatId: string) => {
+    if (!chatId) {
+      setMessages([]);
+      setChatId("");
+      return;
+    }
+
+    const results = await getMessagesFromConversationId(btoa(chatId));
     if (results.status === "success") {
+      setChatId(chatId);
       setMessages(results.data);
     }
   };
@@ -73,6 +84,10 @@ const Chat = (): JSX.Element => {
 
       setChatId(result.data.id);
       cId = result.data.id;
+
+      queryClient.invalidateQueries({
+        queryKey: ["conversations"],
+      });
     }
     const messageObject: MessageObjectType = {
       message,

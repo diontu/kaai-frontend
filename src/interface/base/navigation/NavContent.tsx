@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { useQuery } from "@tanstack/react-query";
 
 // components
 import {
@@ -57,17 +58,21 @@ const ChatGroup = (): JSX.Element => {
   // TODO: this has to refresh when a chat is created
   const [conversations, setConversations] = useState<ConversationType[]>([]);
 
+  const fetchConversations = async () => {
+    const data = await getConversations();
+    return data;
+  };
+
+  const { data } = useQuery({
+    queryKey: ["conversations"],
+    queryFn: fetchConversations,
+  });
+
   useEffect(() => {
-    const fetchConversations = async () => {
-      const response = await getConversations();
-
-      if (response.status === "success") {
-        setConversations(response.data);
-      }
-    };
-
-    fetchConversations();
-  }, []);
+    if (data && data.status === "success") {
+      setConversations(data.data);
+    }
+  }, [data]);
 
   return (
     <SidebarGroup>
