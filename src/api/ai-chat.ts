@@ -1,5 +1,8 @@
+const FINISHED_STRING = "---done---";
+
 class AIChat {
   ws: WebSocket | null = null;
+  finishedMessageCallbacks: (() => void)[] = [];
 
   private isWebSocketReady(ws: WebSocket | null): ws is WebSocket {
     return !!this.ws && this.ws.readyState === WebSocket.OPEN;
@@ -20,10 +23,20 @@ class AIChat {
     this.ws.send(message);
   }
 
+  setOnFinishedMessage(callback: () => void): void {
+    if (!this.ws) return;
+
+    this.finishedMessageCallbacks.push(callback);
+  }
+
   setOnMessage(callback: (event: MessageEvent) => void): void {
     if (!this.ws) return;
 
     this.ws.addEventListener("message", (event) => {
+      if (event.data === FINISHED_STRING) {
+        this.finishedMessageCallbacks.forEach((cb) => cb());
+        return;
+      }
       console.log("Received:", event.data);
       callback(event);
     });
@@ -43,6 +56,7 @@ class AIChat {
 
     console.log("WebSocket connection closed");
     this.ws.close();
+    this.finishedMessageCallbacks = [];
   }
 }
 

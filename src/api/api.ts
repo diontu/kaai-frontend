@@ -1,4 +1,4 @@
-import axios, { AxiosError, isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 
 type Response<T> = SuccessResponse<T> | ErrorResponse<T>;
 
