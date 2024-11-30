@@ -74,6 +74,11 @@ const ChatGroup = (): JSX.Element => {
     }
   }, [data]);
 
+  const getConversationTitle = (conversation: ConversationType): string => {
+    if (!conversation.title) return "";
+    return conversation.title;
+  };
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Chat</SidebarGroupLabel>
@@ -81,12 +86,14 @@ const ChatGroup = (): JSX.Element => {
         <SidebarMenu>
           {/* TODO: handle dynamic dates retrieved from API */}
           {conversations.map((conversation) => (
-            <SidebarMenuItem>
+            <SidebarMenuItem key={conversation.id}>
               <SidebarMenuButton asChild>
                 <Link to={"/chat"} state={{ chatId: conversation.id }}>
                   {<House />}
                   <span>
-                    {moment(conversation.created_at).format("MMM D, YYYY")}
+                    {`(${moment(conversation.created_at).format(
+                      "MMM D, YYYY"
+                    )}) ${getConversationTitle(conversation)}`}
                   </span>
                 </Link>
               </SidebarMenuButton>

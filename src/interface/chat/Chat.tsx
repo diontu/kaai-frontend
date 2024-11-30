@@ -35,6 +35,7 @@ const Chat = (): JSX.Element => {
   useEffect(() => {
     AIChat.start();
     AIChat.setOnMessage(handleMessage);
+    AIChat.setOnFinishedMessage(invalidateConversations);
 
     return () => {
       AIChat.close();
@@ -44,6 +45,12 @@ const Chat = (): JSX.Element => {
   useEffect(() => {
     getExistingMessages(existingChatId);
   }, [location.state]);
+
+  const invalidateConversations = () => {
+    queryClient.invalidateQueries({
+      queryKey: ["conversations"],
+    });
+  };
 
   const getExistingMessages = async (chatId: string) => {
     if (!chatId) {
@@ -85,9 +92,7 @@ const Chat = (): JSX.Element => {
       setChatId(result.data.id);
       cId = result.data.id;
 
-      queryClient.invalidateQueries({
-        queryKey: ["conversations"],
-      });
+      invalidateConversations();
     }
     const messageObject: MessageObjectType = {
       message,

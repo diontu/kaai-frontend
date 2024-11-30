@@ -1,8 +1,8 @@
 const FINISHED_STRING = "---done---";
 
 class AIChat {
-  ws: WebSocket | null = null;
-  finishedMessageCallbacks: (() => void)[] = [];
+  private ws: WebSocket | null = null;
+  private finishedMessageCallbacks: (() => void)[] = [];
 
   private isWebSocketReady(ws: WebSocket | null): ws is WebSocket {
     return !!this.ws && this.ws.readyState === WebSocket.OPEN;
