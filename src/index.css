@@ -141,3 +141,7 @@ ul {
     @apply bg-background text-foreground;
   }
 }
+
+.markdown > * {
+  all: revert;
+}

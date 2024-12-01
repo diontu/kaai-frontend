@@ -1,6 +1,7 @@
 import { useState, useEffect, memo } from "react";
 import { useLocation } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import Markdown from "@/components/complex/MarkdownRenderer";
 
 // components
 import Chatbox from "@/interface/chat/Chatbox";
@@ -110,12 +111,22 @@ const Chat = (): JSX.Element => {
     });
   };
 
+  const renderMessage = (msg: MessagesType[number]): string | null => {
+    let message =
+      ("content" in msg && msg.content) || ("message" in msg && msg.message);
+    if (!message) return null;
+
+    // message = message.substring(1, message.length - 1);
+    // const convertedString = message.replace(/\n/g, "\\n");
+    return `${message}`;
+  };
+
   const Conversation = memo(
     ({ messages }: { messages: MessagesType }): JSX.Element | null => {
       if (messages.length === 0) return null;
 
       return (
-        <div>
+        <div className="text-sm">
           {messages.map((msg, idx) => {
             if (
               ("content" in msg && !msg.content) ||
@@ -133,17 +144,15 @@ const Chat = (): JSX.Element => {
                   className="bg-slate-200 flex justify-end"
                 >
                   <span className="w-[300px] text-right">
-                    {("content" in msg && msg.content) ||
-                      ("message" in msg && msg.message)}
+                    <Markdown content={renderMessage(msg)} />
                   </span>
                 </div>
               );
             } else {
               return (
                 <div key={`messages-${idx}`}>
-                  <span className="w-[300px]">
-                    {("content" in msg && msg.content) ||
-                      ("message" in msg && msg.message)}
+                  <span className="w-full">
+                    <Markdown content={renderMessage(msg)} />
                   </span>
                 </div>
               );
@@ -164,14 +173,14 @@ const Chat = (): JSX.Element => {
       />
     </div>
   ) : (
-    <>
+    <div className="pt-4 pb-8">
       <Conversation messages={messages} />
       <Chatbox
         value={input}
         onChange={(value) => setInput(value)}
         onEnter={() => sendMessage(input)}
       />
-    </>
+    </div>
   );
 };
 
