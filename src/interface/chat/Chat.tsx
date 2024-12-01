@@ -139,11 +139,8 @@ const Chat = (): JSX.Element => {
               ("user" in msg && msg.user)
             ) {
               return (
-                <div
-                  key={`messages-${idx}`}
-                  className="bg-slate-200 flex justify-end"
-                >
-                  <span className="w-[300px] text-right">
+                <div key={`messages-${idx}`} className=" flex justify-end">
+                  <span className="bg-slate-200 text-left px-2 rounded">
                     <Markdown content={renderMessage(msg)} />
                   </span>
                 </div>
@@ -173,7 +170,7 @@ const Chat = (): JSX.Element => {
       />
     </div>
   ) : (
-    <div className="pt-4 pb-8">
+    <div className="pt-4 pb-8 flex flex-col gap-4">
       <Conversation messages={messages} />
       <Chatbox
         value={input}
