@@ -4,6 +4,8 @@ import CardView from "@/interface/dashboard/CardView";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import ListView from "@/interface/dashboard/ListView";
 import { AlignJustify, Folders } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import CreateRecipeModal from "@/interface/dashboard/CreateRecipeModal";
 
 type DashboardProps = {
   fullscreen?: boolean;
@@ -27,6 +29,9 @@ const Dashboard = ({ fullscreen }: DashboardProps) => {
   return (
     <div className={fullscreen ? "max-w-full" : "max-w-[768px] m-auto"}>
       <h1>My Recipes</h1>
+      <CreateRecipeModal>
+        <Button>Add Recipe</Button>
+      </CreateRecipeModal>
       <AdvancedSearch
         searchValue={search}
         searchOnChange={(value) => setSearch(value)}
