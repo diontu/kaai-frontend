@@ -29,27 +29,29 @@ const Dashboard = ({ fullscreen }: DashboardProps) => {
   return (
     <div className={fullscreen ? "max-w-full" : "max-w-[768px] m-auto"}>
       <h1>My Recipes</h1>
-      <CreateRecipeModal>
-        <Button>Add Recipe</Button>
-      </CreateRecipeModal>
-      <AdvancedSearch
-        searchValue={search}
-        searchOnChange={(value) => setSearch(value)}
-        searchPlaceholder="Search Recipe"
-        filterOptions={[{ label: "Protein", value: "protein" }]}
-      />
-      <ToggleGroup
-        type="single"
-        onValueChange={(value) => setView(value as ViewType)}
-        defaultValue={view}
-      >
-        <ToggleGroupItem value="card">
-          <Folders />
-        </ToggleGroupItem>
-        <ToggleGroupItem value="list">
-          <AlignJustify />
-        </ToggleGroupItem>
-      </ToggleGroup>
+      <div className="flex flex-col gap-4">
+        <CreateRecipeModal>
+          <Button>Add Recipe</Button>
+        </CreateRecipeModal>
+        <AdvancedSearch
+          searchValue={search}
+          searchOnChange={(value) => setSearch(value)}
+          searchPlaceholder="Search Recipe"
+          filterOptions={[{ label: "Protein", value: "protein" }]}
+        />
+        <ToggleGroup
+          type="single"
+          onValueChange={(value) => setView(value as ViewType)}
+          defaultValue={view}
+        >
+          <ToggleGroupItem value="card">
+            <Folders />
+          </ToggleGroupItem>
+          <ToggleGroupItem value="list">
+            <AlignJustify />
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
 
       {view === "card" && <CardView data={mockData} />}
       {view === "list" && <ListView data={mockData} />}

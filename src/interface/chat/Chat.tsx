@@ -140,7 +140,7 @@ const Chat = (): JSX.Element => {
             ) {
               return (
                 <div key={`messages-${idx}`} className=" flex justify-end">
-                  <span className="bg-slate-200 text-left px-2 rounded">
+                  <span className="bg-slate-200 text-left px-4 rounded-lg">
                     <Markdown content={renderMessage(msg)} />
                   </span>
                 </div>
