@@ -17,6 +17,7 @@ import {
   SelectContent,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import IngredientInput from "@/interface/dashboard/IngredientInput";
 import { PropsWithChildren } from "react";
 
 type Difficulty = "easy" | "medium" | "hard";
@@ -54,6 +55,12 @@ const CreateRecipeModal = ({ children }: PropsWithChildren): JSX.Element => {
           <div>
             <Label htmlFor="recipeName">Recipe Name</Label>
             <Input id="recipeName" placeholder="Enter recipe name" />
+          </div>
+          <div>
+            <Label>Ingredients</Label>
+            <IngredientInput
+              ingredients={[{ label: "tomato", value: "tomato" }]}
+            />
           </div>
           <div>
             <Label htmlFor="instructions">Instructions</Label>
