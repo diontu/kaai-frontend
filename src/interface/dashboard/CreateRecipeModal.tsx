@@ -82,7 +82,7 @@ const CreateRecipeModal = ({ children }: PropsWithChildren): JSX.Element => {
                 </SelectTrigger>
                 <SelectContent>
                   {difficultyOptions.map((difficulty) => (
-                    <SelectItem value={difficulty.value}>
+                    <SelectItem key={difficulty.value} value={difficulty.value}>
                       {difficulty.label}
                     </SelectItem>
                   ))}
