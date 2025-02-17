@@ -19,6 +19,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import IngredientInput from "@/interface/dashboard/IngredientInput";
 import { PropsWithChildren } from "react";
+import { SignInButton, useAuth } from "@clerk/clerk-react";
 
 type Difficulty = "easy" | "medium" | "hard";
 
@@ -46,6 +47,21 @@ const CreateRecipeModalHeader = (): JSX.Element => {
 };
 
 const CreateRecipeModalContent = (): JSX.Element => {
+  const { isSignedIn } = useAuth();
+
+  if (!isSignedIn) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[150px]">
+        <p className="mb-4 text-lg font-medium">
+          You must sign in to save a recipe
+        </p>
+        <SignInButton mode="modal">
+          <Button>Sign In</Button>
+        </SignInButton>
+      </div>
+    );
+  }
+
   return (
     <>
       <div>
@@ -86,6 +102,8 @@ const CreateRecipeModalContent = (): JSX.Element => {
 };
 
 const CreateRecipeModal = ({ children }: PropsWithChildren): JSX.Element => {
+  const { isSignedIn } = useAuth();
+
   return (
     <div>
       <Dialog>
@@ -94,10 +112,16 @@ const CreateRecipeModal = ({ children }: PropsWithChildren): JSX.Element => {
           <CreateRecipeModalHeader />
           <CreateRecipeModalContent />
           <DialogFooter className="mt-6">
-            <Button className="w-full" variant={"outline"}>
+            <Button
+              className="w-full"
+              variant={"outline"}
+              disabled={!isSignedIn}
+            >
               Save Draft
             </Button>
-            <Button className="w-full">Add Recipe</Button>
+            <Button className="w-full" disabled={!isSignedIn}>
+              Add Recipe
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
