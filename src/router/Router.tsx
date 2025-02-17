@@ -11,6 +11,7 @@ const links = Object.values(ROUTES)
     path: route.path,
     icon: route.icon,
     excludeFromSidebar: route.excludeFromSidebar,
+    requireAuth: route.requireAuth,
   }));
 
 const routes = Object.keys(ROUTES).map((layout) => {

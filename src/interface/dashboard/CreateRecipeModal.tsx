@@ -45,6 +45,46 @@ const CreateRecipeModalHeader = (): JSX.Element => {
   );
 };
 
+const CreateRecipeModalContent = (): JSX.Element => {
+  return (
+    <>
+      <div>
+        <Label htmlFor="recipeName">Recipe Name</Label>
+        <Input id="recipeName" placeholder="Enter recipe name" />
+      </div>
+      <div>
+        <Label>Ingredients</Label>
+        <IngredientInput ingredients={[{ label: "tomato", value: "tomato" }]} />
+      </div>
+      <div>
+        <Label htmlFor="instructions">Instructions</Label>
+        <Textarea id="instructions" placeholder="Enter recipe description" />
+      </div>
+      <div className="flex gap-2">
+        <div className="w-full">
+          <Label htmlFor="cookingTime">Cooking Time (minutes)</Label>
+          <Input id="cookingTime" placeholder="e.g. 30" />
+        </div>
+        <div className="w-full">
+          <Label htmlFor="difficulty">Difficulty</Label>
+          <Select>
+            <SelectTrigger id="difficulty">
+              <SelectValue placeholder="Select difficulty" />
+            </SelectTrigger>
+            <SelectContent>
+              {difficultyOptions.map((difficulty) => (
+                <SelectItem key={difficulty.value} value={difficulty.value}>
+                  {difficulty.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+    </>
+  );
+};
+
 const CreateRecipeModal = ({ children }: PropsWithChildren): JSX.Element => {
   return (
     <div>
@@ -52,44 +92,7 @@ const CreateRecipeModal = ({ children }: PropsWithChildren): JSX.Element => {
         <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
           <CreateRecipeModalHeader />
-          <div>
-            <Label htmlFor="recipeName">Recipe Name</Label>
-            <Input id="recipeName" placeholder="Enter recipe name" />
-          </div>
-          <div>
-            <Label>Ingredients</Label>
-            <IngredientInput
-              ingredients={[{ label: "tomato", value: "tomato" }]}
-            />
-          </div>
-          <div>
-            <Label htmlFor="instructions">Instructions</Label>
-            <Textarea
-              id="instructions"
-              placeholder="Enter recipe description"
-            />
-          </div>
-          <div className="flex gap-2">
-            <div className="w-full">
-              <Label htmlFor="cookingTime">Cooking Time (minutes)</Label>
-              <Input id="cookingTime" placeholder="e.g. 30" />
-            </div>
-            <div className="w-full">
-              <Label htmlFor="difficulty">Difficulty</Label>
-              <Select>
-                <SelectTrigger id="difficulty">
-                  <SelectValue placeholder="Select difficulty" />
-                </SelectTrigger>
-                <SelectContent>
-                  {difficultyOptions.map((difficulty) => (
-                    <SelectItem key={difficulty.value} value={difficulty.value}>
-                      {difficulty.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+          <CreateRecipeModalContent />
           <DialogFooter className="mt-6">
             <Button className="w-full" variant={"outline"}>
               Save Draft

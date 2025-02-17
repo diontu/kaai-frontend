@@ -1,5 +1,5 @@
 import { memo } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 // components
 import Header from "@/interface/base/Header";
@@ -8,6 +8,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 
 // types
 import type { Links } from "@/router/Routes";
+import { ProtectedRoute } from "@/router/ProtectedRoute";
 
 export type MainLayout = "main";
 
@@ -16,6 +17,11 @@ type Props = {
 };
 
 const Layout = memo(({ links }: Props) => {
+  const location = useLocation();
+  const linkRequiresAuth = links.find(
+    (link) => link.path === location.pathname
+  )?.requireAuth;
+
   return (
     <SidebarProvider>
       <div className="flex w-screen h-screen px-6">
@@ -23,7 +29,13 @@ const Layout = memo(({ links }: Props) => {
         <div className="flex flex-col w-full [&>*]:px-2">
           <Header />
           <div className="overflow-y-scroll flex-grow">
-            <Outlet />
+            {linkRequiresAuth ? (
+              <ProtectedRoute>
+                <Outlet />
+              </ProtectedRoute>
+            ) : (
+              <Outlet />
+            )}
           </div>
         </div>
       </div>

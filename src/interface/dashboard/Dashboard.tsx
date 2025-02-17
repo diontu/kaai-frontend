@@ -6,6 +6,7 @@ import ListView from "@/interface/dashboard/ListView";
 import { AlignJustify, Folders } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import CreateRecipeModal from "@/interface/dashboard/CreateRecipeModal";
+import { useNavigate } from "react-router-dom";
 
 type DashboardProps = {
   fullscreen?: boolean;
@@ -14,6 +15,7 @@ type DashboardProps = {
 type ViewType = "card" | "list";
 
 const Dashboard = ({ fullscreen }: DashboardProps) => {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [view, setView] = useState<ViewType>("list");
 
@@ -33,6 +35,7 @@ const Dashboard = ({ fullscreen }: DashboardProps) => {
         <CreateRecipeModal>
           <Button>Add Recipe</Button>
         </CreateRecipeModal>
+        <Button onClick={() => navigate("/explore")}>Change URL</Button>
         <AdvancedSearch
           searchValue={search}
           searchOnChange={(value) => setSearch(value)}
