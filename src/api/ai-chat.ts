@@ -5,7 +5,7 @@ class AIChat {
   private finishedMessageCallbacks: (() => void)[] = [];
 
   private isWebSocketReady(ws: WebSocket | null): ws is WebSocket {
-    return !!this.ws && this.ws.readyState === WebSocket.OPEN;
+    return !!ws && ws.readyState === WebSocket.OPEN;
   }
 
   start(): void {

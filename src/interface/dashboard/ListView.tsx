@@ -7,16 +7,16 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-type ListViewProps = {
-  data: {
-    id: number;
-    title: string;
-    description: string;
-    image: string;
-  }[];
-};
+// type ListViewProps = {
+//   data: {
+//     id: number;
+//     title: string;
+//     description: string;
+//     image: string;
+//   }[];
+// };
 
-const ListView = ({ data }: ListViewProps): JSX.Element => {
+const ListView = (): JSX.Element => {
   return (
     <Table>
       <TableHeader>
